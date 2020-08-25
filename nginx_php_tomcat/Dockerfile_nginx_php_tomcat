@@ -79,25 +79,28 @@ RUN yum install -y gcc wget gcc-c++ make \
     yum clean all && \
     rm -rf /var/cache/yum/* && \
     ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
-COPY jdk-8u45-linux-x64.tar.gz /root
+
 RUN cd /root && \
- tar zxf jdk-8u45-linux-x64.tar.gz && \
- mv jdk1.8.0_45 /usr/local/jdk1.8
-COPY zookeeper-3.4.14.tar.gz /root
+ wget --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/8u141-b15/336fa29ff2bb4ef291e347e091f7f4a7/jdk-8u141-linux-x64.tar.gz"  && \
+ tar zxf jdk-8u141-linux-x64.tar.gz && \ 
+ mv jdk1.8.0_141  /usr/local/jdk1.8 
+
 RUN cd /root && \
+  wget https://mirrors.tuna.tsinghua.edu.cn/apache/zookeeper/zookeeper-3.4.14/zookeeper-3.4.14.tar.gz && \
   tar zxf zookeeper-3.4.14.tar.gz && \
   mv  zookeeper-3.4.14  /usr/local/zookeeper && \
   mv /usr/local/zookeeper/conf/zoo_sample.cfg /usr/local/zookeeper/conf/zoo.cfg
-COPY apache-tomcat-8.5.31.tar.gz /root
+
 RUN cd /root && \
+  wget http://archive.apache.org/dist/tomcat/tomcat-8/v8.5.31/bin/apache-tomcat-8.5.31.tar.gz && \
   tar zxf apache-tomcat-8.5.31.tar.gz && \
-  mv  apache-tomcat-8.5.31 /usr/local/tomcat && \
-  wget https://cn.wordpress.org/latest-zh_CN.tar.gz
+  mv  apache-tomcat-8.5.31 /usr/local/tomcat 
+
 ENV JAVA_HOME=/usr/local/jdk1.8
 ENV JRE_HOME=$JAVA_HOME/jre
 ENV CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar:$JRE_HOME/lib:$CLASSPATH
 ENV PATH=/sbin:$JAVA_HOME/bin:$PATH
-
+RUN rm -rf /root/*
 COPY run.sh /tmp/run.sh
 RUN chmod +x /tmp/run.sh
 EXPOSE 80 443 9000 8080 2181
