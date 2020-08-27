@@ -1,6 +1,6 @@
 version: '3'
 services:
-  nginx:
+  nginx_tomcat:
     hostname: nginx_tomcat
     build:
       context: ./nginx_tomcat
