@@ -1,10 +1,10 @@
 version: '3'
 services:
   nginx:
-    hostname: nginx_php_tomcat
+    hostname: nginx_tomcat
     build:
-      context: ./nginx_php_tomcat
-      dockerfile: Dockerfile_nginx_php_tomcat
+      context: ./nginx_tomcat
+      dockerfile: Dockerfile_nginx_tomcat
     ports:
       - 80:80
       - 443:443
@@ -12,7 +12,7 @@ services:
     networks:
       - lnmt
     volumes:
-      - ./nginx_php_tomcat/vhosts/osce.conf:/usr/local/openresty/nginx/conf/vhosts/osce.conf
+      - ./nginx_tomcat/vhosts/osce.conf:/usr/local/openresty/nginx/conf/vhosts/osce.conf
       - ./webapps:/usr/local/tomcat/webapps
       - ./webapps:/usr/local/openresty/nginx/html
 
