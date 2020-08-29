@@ -14,6 +14,7 @@ services:
     volumes:
       - ./nginx_tomcat/nginx.conf:/usr/local/openresty/nginx/conf/nginx.conf
       - ./nginx_tomcat/osce.conf:/usr/local/openresty/nginx/conf/vhosts/osce.conf
+      - ./nginx_tomcat/ssl:/usr/local/openresty/nginx/conf/ssl
       - ./webapps:/usr/local/tomcat/webapps
       - ./webapps:/usr/local/openresty/nginx/html
 
