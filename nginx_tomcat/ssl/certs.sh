@@ -38,9 +38,9 @@ EOF
 
 cfssl gencert -initca ca-csr.json | cfssljson -bare ca -
 
-cat > bbs.sunwenju.com-csr.json <<EOF
+cat > www.wenjusir.cn-csr.json <<EOF
 {
-  "CN": "bbs.sunwenju.com",
+  "CN": "www.wenjusir.cn",
   "hosts": [],
   "key": {
     "algo": "rsa",
@@ -56,5 +56,5 @@ cat > bbs.sunwenju.com-csr.json <<EOF
 }
 EOF
 
-cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=kubernetes bbs.sunwenju.com-csr.json | cfssljson -bare bbs.sunwenju.com 
+cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=kubernetes www.wenjusir.cn-csr.json | cfssljson -bare www.wenjusir.cn 
 
