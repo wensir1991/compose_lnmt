@@ -34,6 +34,21 @@ services:
       MYSQL_DATABASE: osce
       MYSQL_USER: osce
       MYSQL_PASSWORD: osce
+  
+  redis:
+    container_name: redis
+    build:
+      context: ./nginx_tomcat
+      dockerfile: Dockerfile_redis
+    ports:
+      - 6379:6379
+    
+    networks:
+      - lnmt
+    volumes:
+      - ./redis:/data
+      - ./redis/conf:/usr/local/etc/redis
+    command: redis-server --port 6379 --requirepass osce --appendonly yes
 
 networks:
   lnmt:
