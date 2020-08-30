@@ -50,5 +50,12 @@ services:
       - ./redis/conf:/usr/local/etc/redis
     command: redis-server --port 6379 --requirepass 123456@ --appendonly yes
 
+  memcached:
+    container_name: memcached
+    image: memcached:latest
+    ports:
+      - 11211:11211
+    networks:
+      - lnmt
 networks:
   lnmt:
