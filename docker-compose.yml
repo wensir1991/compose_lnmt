@@ -2,9 +2,10 @@ version: '3'
 services:
   nginx_tomcat:
     container_name: nginx_tomcat
-    build:
-      context: ./nginx_tomcat
-      dockerfile: Dockerfile_nginx_tomcat
+    image: registry.cn-shenzhen.aliyuncs.com/wenjusir/aju:nginx_tomcat
+    #build:
+      #context: ./nginx_tomcat
+      #dockerfile: Dockerfile_nginx_tomcat
     ports:
       - 80:80
       - 443:443
@@ -31,13 +32,14 @@ services:
     command: --character-set-server=utf8
     environment:
       MYSQL_ROOT_PASSWORD: 123456@
-     
+    
   
   redis:
     container_name: redis
-    build:
-      context: ./nginx_tomcat
-      dockerfile: Dockerfile_redis
+    image: registry.cn-shenzhen.aliyuncs.com/wenjusir/aju:redis
+    #build:
+      #context: ./nginx_tomcat
+      #dockerfile: Dockerfile_redis
     ports:
       - 6379:6379
     
