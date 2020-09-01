@@ -32,6 +32,9 @@ services:
     command: --character-set-server=utf8
     environment:
       MYSQL_ROOT_PASSWORD: 123456@
+      #MYSQL_DATABASE: test 
+      #MYSQL_USER: user
+      #MYSQL_PASSWORD: user123456
     
   
   redis:
