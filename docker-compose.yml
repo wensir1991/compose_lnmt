@@ -18,7 +18,7 @@ services:
       - ./webapps:/usr/local/openresty/nginx/html
 
   tomcat:
-    container_name: nginx
+    container_name: tomcat
     image: registry.cn-shenzhen.aliyuncs.com/wenjusir/aju:tomcat
     #build:
       #context: ./nginx_tomcat
