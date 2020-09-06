@@ -1,15 +1,14 @@
 version: '3'
 services:
-  nginx_tomcat:
-    container_name: nginx_tomcat
-    image: registry.cn-shenzhen.aliyuncs.com/wenjusir/aju:nginx_tomcat
+  nginx:
+    container_name: nginx
+    image: registry.cn-shenzhen.aliyuncs.com/wenjusir/aju:nginx
     #build:
       #context: ./nginx_tomcat
-      #dockerfile: Dockerfile_nginx_tomcat
+      #dockerfile: Dockerfile_nginx
     ports:
       - 80:80
       - 443:443
-      - 8080:8080
     networks:
       - lnmt
     volumes:

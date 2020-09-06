@@ -1,0 +1,33 @@
+FROM centos:7
+MAINTAINER sunwenju
+
+RUN yum install -y gcc  gcc-c++ make kernel-devel kernel-headers \
+    openssl-devel pcre-devel gd-devel \
+    iproute net-tools telnet wget curl unzip perl kernel-headers kernel-devel vim && \
+    yum clean all && \
+    rm -rf /var/cache/yum/* && \
+    ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+RUN cd /root && \
+ wget --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/8u141-b15/336fa29ff2bb4ef291e347e091f7f4a7/jdk-8u141-linux-x64.tar.gz" && \
+ tar zxf jdk-8u141-linux-x64.tar.gz  && \
+ mv jdk1.8.0_141  /usr/local/jdk
+RUN cd /root && \
+  wget http://archive.apache.org/dist/tomcat/tomcat-8/v8.5.31/bin/apache-tomcat-8.5.31.tar.gz && \
+  tar zxf apache-tomcat-8.5.31.tar.gz && \
+  mv  apache-tomcat-8.5.31 /usr/local/tomcat && \
+  sed -i '1a JAVA_OPTS="-Djava.security.egd=file:/dev/./urandom"' /usr/local/tomcat/bin/catalina.sh
+RUN wget https://repo1.maven.org/maven2/io/prometheus/jmx/jmx_prometheus_javaagent/0.3.1/jmx_prometheus_javaagent-0.3.1.jar && \
+    mkdir /usr/local/jmx && \
+    mv jmx_prometheus_javaagent-0.3.1.jar /usr/local/jmx
+
+COPY  tomcat.yml /usr/local/jmx/config.yaml
+#RUN sed -i '2a JAVA_OPTS="-javaagent:/usr/local/jmx/jmx_prometheus_javaagent-0.3.1.jar=8989:/usr/local/jmx/config.yaml"' /usr/local/tomcat/bin/catalina.sh
+
+ENV JAVA_HOME=/usr/local/jdk
+ENV JRE_HOME=$JAVA_HOME/jre
+ENV CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar:$JRE_HOME/lib:$CLASSPATH
+ENV PATH=/sbin:$JAVA_HOME/bin:$PATH:/usr/local/tomcat/bin
+RUN rm -rf /root/*
+WORKDIR /usr/local/tomcat
+EXPOSE 8080 8989
+CMD ["catalina.sh", "run"]

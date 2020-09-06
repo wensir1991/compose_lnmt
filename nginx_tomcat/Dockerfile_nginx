@@ -1,0 +1,35 @@
+FROM centos:7
+MAINTAINER sunwenju
+RUN yum install -y gcc wget gcc-c++ make \
+    openssl-devel pcre-devel gd-devel \
+    iproute net-tools telnet wget curl unzip perl kernel-headers kernel-devel vim && \
+    yum clean all && \
+    rm -rf /var/cache/yum/*
+RUN yum -y install gcc make pcre pcre-devel zlib zlib-devel openssl-devel  readline-devel kernel-headers kernel-devel  && \
+    cd && \
+    wget https://openresty.org/download/openresty-1.15.8.1.tar.gz  && \
+    tar zxf openresty-1.15.8.1.tar.gz && \
+    cd openresty-1.15.8.1 && \
+    ./configure --prefix=/usr/local/openresty \
+    --with-http_stub_status_module \
+    --with-http_ssl_module \
+    --with-stream	&& \
+    make -j 2 && make install && \
+	ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && \
+	cd && \
+	wget https://github.com/unixhot/waf/archive/v1.0.0.tar.gz && \
+	tar zxf v1.0.0.tar.gz && \
+	cp -r waf-1.0.0/waf /usr/local/openresty/nginx/conf/ && \
+        mkdir -p /usr/local/openresty/nginx/conf/{vhosts,ssl} && \
+        mkdir -p /usr/local/openresty/nginx/downloads && \
+		groupadd nginx && \
+		useradd -g nginx -s /sbin/nologin nginx  
+ENV PATH $PATH:/usr/local/openresty/nginx/sbin
+COPY nginx.conf /usr/local/openresty/nginx/conf/nginx.conf
+COPY osce.conf /usr/local/openresty/nginx/conf/vhosts/osce.conf
+COPY ssl/certs.sh  /usr/local/openresty/nginx/conf/ssl/
+COPY ssl/cfssl.sh  /usr/local/openresty/nginx/conf/ssl/
+
+RUN rm -rf /root/*  
+EXPOSE 80 443 
+CMD ["nginx", "-g", "daemon off;"]
