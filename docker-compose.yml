@@ -15,8 +15,22 @@ services:
       - ./nginx_tomcat/nginx.conf:/usr/local/openresty/nginx/conf/nginx.conf
       - ./nginx_tomcat/osce.conf:/usr/local/openresty/nginx/conf/vhosts/osce.conf
       - ./nginx_tomcat/ssl:/usr/local/openresty/nginx/conf/ssl
-      - ./webapps:/usr/local/tomcat/webapps
       - ./webapps:/usr/local/openresty/nginx/html
+
+  tomcat:
+    container_name: nginx
+    image: registry.cn-shenzhen.aliyuncs.com/wenjusir/aju:tomcat
+    #build:
+      #context: ./nginx_tomcat
+      #dockerfile: Dockerfile_tomcat
+    ports:
+      - 8080:8080
+      - 8989:8989
+    networks:
+      - lnmt
+    volumes:
+      - ./webapps:/usr/local/tomcat/webapps
+      
 
   mysql:
     container_name: mysql5.7
@@ -51,6 +65,15 @@ services:
       - ./redis:/data
       - ./redis/conf:/usr/local/etc/redis
     command: redis-server --port 6379 --requirepass 123456@ --appendonly yes
+
+  zookeeper:
+    container_name: zookeeper
+    image: registry.cn-shenzhen.aliyuncs.com/wenjusir/aju:zookeeper
+    ports:
+      - 2181:2181
+      - 2182:2182
+    networks:
+      - lnmt
 
   memcached:
     container_name: memcached
