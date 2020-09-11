@@ -31,6 +31,7 @@ services:
     volumes:
       - ./webapps:/usr/local/tomcat/webapps
       - ./nginx_tomcat/server.xml:/usr/local/tomcat/conf/server.xml
+      - ./logs:/usr/local/tomcat/logs
       
 
   mysql:
