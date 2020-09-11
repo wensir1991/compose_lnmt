@@ -30,6 +30,7 @@ services:
       - lnmt
     volumes:
       - ./webapps:/usr/local/tomcat/webapps
+      - ./nginx_tomcat/server.xml:/usr/local/tomcat/conf/server.xml
       
 
   mysql:
